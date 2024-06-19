@@ -23,6 +23,10 @@ class SectionResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?int $navigationSort = 3;
+
+    protected static ?string $navigationGroup = 'Settings';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -41,6 +45,7 @@ class SectionResource extends Resource
             ->columns([
                 TextColumn::make('name'),
                 TextColumn::make('classes.name')
+                ->badge()
             ])
             ->filters([
                 //

@@ -24,7 +24,18 @@ class StudentResource extends Resource
 {
     protected static ?string $model = Student::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
+
+    protected static ?int $navigationSort = 1;
+
+    protected static ?string $navigationGroup = 'Settings';
+
+
+    public static function getNavigationBadge(): ?string
+        {
+            return static::getModel()::count();
+           
+        }
 
     public static function form(Form $form): Form
     {
@@ -59,8 +70,10 @@ class StudentResource extends Resource
             ->columns([
                 TextColumn::make('name'),
                 TextColumn::make('email'),
-                TextColumn::make('classes.name'),
-                TextColumn::make('section.name'),
+                TextColumn::make('classes.name')
+                ->badge(),
+                TextColumn::make('section.name')
+                ->badge(),
             ])
             ->filters([
                 SelectFilter::make('class_id')

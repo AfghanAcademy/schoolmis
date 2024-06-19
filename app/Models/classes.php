@@ -13,11 +13,15 @@ class classes extends Model
 
     public function sections()
     {
-        return $this->hasMany(Section::class);
+        return $this->hasMany(Section::class,'class_id');
     }
 
     public function students()
     {
-        return $this->hasMany(Student::class);
+        return $this->hasMany(Student::class,'class_id');
+    }
+
+    public function getStudentCountAttribute(){
+        return $this->students->count();
     }
 }
