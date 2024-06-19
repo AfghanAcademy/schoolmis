@@ -18,6 +18,6 @@ class Student extends Model
 
     public function classes()
     {
-        return $this->belongsTo(Classes::class);
+        return $this->belongsTo(Classes::class,'class_id');
     }
 }
