@@ -18,6 +18,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Filters\SelectFilter;
 
 class StudentResource extends Resource
 {
@@ -29,19 +30,26 @@ class StudentResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name'),
-                TextInput::make('email'),
+                TextInput::make('name')
+                    ->rules(['max:20'])
+                    ->required(),
+                TextInput::make('email')
+                    ->email()
+                    ->required(),
                 Select::make('class_id')
                     ->live()
-                    ->relationship('classes', 'name'),
+                    ->relationship('classes', 'name')
+                    ->required(),
                 Select::make('section_id')
-                    ->options(function(Get $get){
+                    ->options(function (Get $get) {
                         $class_id = $get('class_id');
-                        if($class_id){
+                        if ($class_id) {
                             return Section::where('class_id', $class_id)->pluck('name', 'id')->toArray();
                         }
-                    }),
-                    
+                    })
+                    ->label('Section')
+                    ->required(),
+
             ]);
     }
 
@@ -55,7 +63,15 @@ class StudentResource extends Resource
                 TextColumn::make('section.name'),
             ])
             ->filters([
-                //
+                SelectFilter::make('class_id')
+                    ->label('Class')
+                    ->multiple()
+                    ->preload()
+                    ->relationship('classes','name'),
+                SelectFilter::make('section_id')
+                ->relationship('section','name')
+                ->multiple()
+                ->preload()
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

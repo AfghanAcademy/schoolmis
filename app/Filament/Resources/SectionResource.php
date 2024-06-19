@@ -27,9 +27,11 @@ class SectionResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name'),
+                TextInput::make('name')
+                ->required(),
                 Select::make('class_id')
                     ->relationship('classes','name')
+                    ->required()
             ]);
     }
 

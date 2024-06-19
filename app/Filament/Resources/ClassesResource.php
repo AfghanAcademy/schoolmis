@@ -28,6 +28,7 @@ class ClassesResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')
+                ->required()
             ]);
     }
 
